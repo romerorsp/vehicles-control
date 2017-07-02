@@ -1,0 +1,40 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    addresses: localhost:5672
+    username: admin
+    password: admin
+    
+vehicles:
+  mq:
+    consumer:
+      queues: vehicles.state
+      queue:
+        size: 200
+  automata:
+    script:
+      - initial->CREATE:created,PAUSE:initial,FINISH:initial,MOVE_UP:initial,MOVE_DOWN:initial,MOVE_LEFT:initial,MOVE_RIGHT:initial
+      - created->PAUSE:created,CREATE:created,FINISH:end,MOVE_UP:MovingUp,MOVE_DOWN:MovingDown,MOVE_LEFT:MovingLeft,MOVE_RIGHT:MovingRight
+      - MovingUp->PAUSE:created,CREATE:MovingUp,FINISH:end,MOVE_UP:MovingUp,MOVE_DOWN:MovingDown,MOVE_LEFT:MovingLeft,MOVE_RIGHT:MovingRight
+      - MovingDown->PAUSE:created,CREATE:MovingDown,FINISH:end,MOVE_UP:MovingUp,MOVE_DOWN:MovingDown,MOVE_LEFT:MovingLeft,MOVE_RIGHT:MovingRight
+      - MovingLeft->PAUSE:created,CREATE:MovingLeft,FINISH:end,MOVE_UP:MovingUp,MOVE_DOWN:MovingDown,MOVE_LEFT:MovingLeft,MOVE_RIGHT:MovingRight
+      - MovingRight->PAUSE:created,CREATE:MovingRight,FINISH:end,MOVE_UP:MovingUp,MOVE_DOWN:MovingDown,MOVE_LEFT:MovingLeft,MOVE_RIGHT:MovingRight
+      - End->
+
+hazelcast:
+  config:
+    group:
+      name: vehicles
+      password: Tb4
+    network:
+      port: 5705
+      port-auto-increment: true
+      multicast:
+        enabled: true
+        interfaces: false
+        port: 6566
+        group: group
+        loopback-mode: false
+      tcp-ip.enabled: true
+      tcp-ip.members: 127.0.0.1

@@ -1,4 +1,4 @@
-package br.com.javapi.beertime.consumer;
+package br.com.javapi.beertime.websocket.vehicles;
 
 import org.junit.Test;
 

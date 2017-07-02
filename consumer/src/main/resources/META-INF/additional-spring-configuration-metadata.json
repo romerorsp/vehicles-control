@@ -1,0 +1,72 @@
+{"properties": [
+  {
+    "name": "vehicles.mq.consumer.queue.size",
+    "type": "java.lang.String",
+    "description": "A description for 'vehicles.mq.consumer.queue.size'"
+  },
+  {
+    "name": "hazelcast.config.group.name",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.config.group.name'"
+  },
+  {
+    "name": "hazelcast.config.group.password",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.config.group.password'"
+  },
+  {
+    "name": "hazelcast.config.network.port",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.config.network.port'"
+  },
+  {
+    "name": "hazelcast.config.network.port-auto-increment",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.config.network.port-auto-increment'"
+  },
+  {
+    "name": "hazelcast.config.network.multicast.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.config.network.multicast.enabled'"
+  },
+  {
+    "name": "hazelcast.config.network.multicast.interfaces",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.config.network.multicast.interfaces'"
+  },
+  {
+    "name": "hazelcast.config.network.multicast.port",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.config.network.multicast.port'"
+  },
+  {
+    "name": "hazelcast.config.network.multicast.group",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.config.network.multicast.group'"
+  },
+  {
+    "name": "hazelcast.config.network.multicast.loopback-mode",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.config.network.multicast.loopback-mode'"
+  },
+  {
+    "name": "hazelcast.config.network.tcp-ip.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.config.network.tcp-ip.enabled'"
+  },
+  {
+    "name": "hazelcast.config.network.tcp-ip.members",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.config.network.tcp-ip.members'"
+  },
+  {
+    "name": "vehicles.mq.consumer.queues",
+    "type": "java.lang.String[]",
+    "description": "A description for 'vehicles.mq.consumer.queues'"
+  },
+  {
+    "name": "vehicles.automata.script",
+    "type": "java.lang.String[]",
+    "description": "A description for 'vehicles.automata.script'"
+  }
+]}

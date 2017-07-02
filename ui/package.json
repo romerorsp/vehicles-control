@@ -21,8 +21,13 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
+    "angular-websocket": "^2.0.1",
     "common-tags": "^1.4.0",
     "core-js": "^2.4.1",
+    "cross-spawn": "^5.1.0",
+    "lodash.assign": "^4.2.0",
+    "node-gyp": "^3.6.2",
+    "npmlog": "^4.1.2",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"
   },
