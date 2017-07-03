@@ -1,0 +1,28 @@
+<md-card class="add-field">
+  <md-card-content>
+    <h2 class="example-h2">Add New Field</h2>
+    <div>
+      <p>
+        <md-input-container>
+          <input mdInput placeholder="Field Name" required>
+        </md-input-container>
+      </p>
+      Choose the width value:
+      <md-slider min="0" max="1600" step="10"
+                 [thumbLabel]="true"
+                 [tick-interval]="auto"
+                 [(value)]="width"
+                 (change)="onWidthInput($event)"></md-slider>
+
+      Choose the height value:
+      <md-slider min="0" max="900" step="10"
+                 [thumbLabel]="true"
+                 [tick-interval]="auto"
+                 [(value)]="height"
+                 (change)="onHeightInput($event)"></md-slider>
+      <button md-fab class="pull-right" (click)="createNewField()" [md-dialog-close]="close">
+        <md-icon>send</md-icon>
+      </button>
+    </div>
+  </md-card-content>
+</md-card>

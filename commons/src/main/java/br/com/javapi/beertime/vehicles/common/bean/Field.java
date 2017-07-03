@@ -15,4 +15,10 @@ public class Field implements Serializable {
     private static final long serialVersionUID = 3889661368060744791L;
 
     private List<Vehicle> vehicles;
+    
+    private String name;
+    
+    private int width;
+    
+    private int height;
 }
