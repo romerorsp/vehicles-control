@@ -14,7 +14,7 @@ import javax.websocket.server.ServerEndpoint;
 import br.com.javapi.beertime.vehicles.bean.Transition;
 import br.com.javapi.beertime.vehicles.common.bean.Message;
 
-@ServerEndpoint("/socket/{fieldId}/{vehicleId}")
+//@ServerEndpoint("/socket/{fieldId}/{vehicleId}")
 public class VehicleEndpoint {
 
     public final List<Session> sessions = new ArrayList<>();

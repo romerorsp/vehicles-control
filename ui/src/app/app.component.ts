@@ -1,3 +1,8 @@
+import { NewFieldCommand } from './commands/new-field-command';
+import { Command } from './commands/command';
+import { CommandsMappingService } from './commands-mapping.service';
+import { ApplicationSocket } from './application-socket';
+import { SocketService } from './socket.service';
 import { CreateNewFieldDialogComponent } from './create-new-field-dialog/create-new-field-dialog.component';
 import { VehiclesWSService } from './vehicles-w-s.service';
 import { Component, OnInit } from '@angular/core';
@@ -12,10 +17,13 @@ import { Field } from './field';
 export class AppComponent implements OnInit {
 
   selectedField: Field;
-  fields: Array<Field> = new Array<Field>();
   title = 'Vehicles Control';
+  private appSocket: ApplicationSocket;
+  fields: Array<Field> = new Array<Field>();
 
   constructor(private vehiclesWS: VehiclesWSService,
+              private socketService: SocketService,
+              private commandsMappingService: CommandsMappingService,
               private dialog: MdDialog) {}
 
   ngOnInit(): void {
@@ -27,7 +35,16 @@ export class AppComponent implements OnInit {
   }
 
   getFields(): void {
-    this.vehiclesWS.getFields().then(fields => this.fields = fields);
+    this.vehiclesWS.getFields().then(fields => {
+      this.fields = fields;
+      this.appSocket = this.socketService.getApplicationSocket();
+      this.commandsMappingService.addCommand(new NewFieldCommand('NEW_FIELD', this.fields));
+    }).catch(this.createAppSocket);
+  }
+
+  createAppSocket(): any {
+    this.appSocket = this.socketService.getApplicationSocket();
+    this.commandsMappingService.addCommand(new NewFieldCommand('NEW_FIELD', this.fields));
   }
 
   setCurrentField(field: Field): void {

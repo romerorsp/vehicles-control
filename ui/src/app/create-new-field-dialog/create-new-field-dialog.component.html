@@ -4,7 +4,7 @@
     <div>
       <p>
         <md-input-container>
-          <input mdInput placeholder="Field Name" required>
+          <input mdInput placeholder="Field Name" [(ngModel)]="fName" (focus)="clearError()" focused required>
         </md-input-container>
       </p>
       Choose the width value:
@@ -20,9 +20,12 @@
                  [tick-interval]="auto"
                  [(value)]="height"
                  (change)="onHeightInput($event)"></md-slider>
-      <button md-fab class="pull-right" (click)="createNewField()" [md-dialog-close]="close">
+      <button md-fab class="pull-right" (click)="createNewField()">
         <md-icon>send</md-icon>
       </button>
     </div>
   </md-card-content>
+  <p>
+    <span class="errors">{{errorMessage}}</span>
+  </p>
 </md-card>

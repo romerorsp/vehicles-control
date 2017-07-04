@@ -1,3 +1,5 @@
+import { CommandsMappingService } from './commands-mapping.service';
+import { ApplicationSocketService } from './application-socket.service';
 import { VehiclesWSService } from './vehicles-w-s.service';
 import { SocketService } from './socket.service';
 import { VehiclesCanvasService } from './vehicles-canvas.service';
@@ -5,6 +7,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
+import { FormsModule } from '@angular/forms';
+
 import { MaterialModule,
          MdDialogModule,
          MdToolbarModule,
@@ -37,11 +41,14 @@ import { CreateNewFieldDialogComponent } from './create-new-field-dialog/create-
     MdTabsModule,
     MdInputModule,
     MdSliderModule,
-    HttpModule
+    HttpModule,
+    FormsModule
   ],
   providers: [VehiclesCanvasService,
               SocketService,
-              VehiclesWSService],
+              VehiclesWSService,
+              ApplicationSocketService,
+              CommandsMappingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

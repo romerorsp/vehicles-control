@@ -13,12 +13,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
 /**
  * @author Rômero Ricardo
  *
  */
 @EnableScheduling
+@EnableWebSocket
 @SpringBootApplication(scanBasePackages="br.com.javapi.beertime.vehicles")
 public class WSocketApplication {
 

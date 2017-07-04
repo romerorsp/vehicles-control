@@ -21,4 +21,20 @@ public class Field implements Serializable {
     private int width;
     
     private int height;
+
+    private String id;
+
+    public Field() {}
+
+    public Field(String name, int width, int height) {
+        this.name = name;
+        this.width = width;
+        this.height = height;
+        this.id = name.toLowerCase().replaceAll(" ", "-");
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+        this.id = name.toLowerCase().replaceAll(" ", "-");
+    }
 }

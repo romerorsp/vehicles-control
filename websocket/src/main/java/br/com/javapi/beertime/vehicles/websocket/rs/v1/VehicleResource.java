@@ -13,6 +13,8 @@ import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.com.javapi.beertime.vehicles.common.bean.Field;
+import br.com.javapi.beertime.vehicles.websocket.endpoint.SupervisorWebSocket;
 import br.com.javapi.beertime.vehicles.websocket.rs.v1.request.FieldRequest;
 import br.com.javapi.beertime.vehicles.websocket.rs.v1.request.VehicleRequest;
 import br.com.javapi.beertime.vehicles.websocket.service.FieldService;
@@ -24,19 +26,27 @@ public class VehicleResource {
     @Autowired
     private FieldService service;
     
+    @Autowired
+    private SupervisorWebSocket supervisor;
+    
     @POST
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     @Path("field")
     public Response createField(@Valid final FieldRequest request) {
-        //TODO: Add the new field to the (hazelcast) cache ....
-        return Response.ok().build();
+        Field field = request.getBean();
+        if(service.addField(field)) {
+            supervisor.notifyNewField(field);
+            return Response.status(Status.CREATED).build();
+        } else {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
     }
     
     @POST
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    @Path("forfield/{fieldId}")
+    @Path("vehicle/{fieldId}")
     public Response createVehicle(@Valid final VehicleRequest request) {
         //TODO: Create the new vehicle in the parameterized field....
         return Response.status(Status.CREATED).build();

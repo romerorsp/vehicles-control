@@ -10,7 +10,7 @@
 <span *ngIf="fieldsIsEmpty()">No field was created for vehicle's traffic! Go create one =)</span>
 <span *ngIf="!fieldsIsEmpty()">To add a new vehicle to the current (selected) field, click any part of the field.</span>
 <md-tab-group>
-  <md-tab *ngFor="let field of fields"  ng-click="setCurrentField(field)" dynamicHeight="true" dynamicWidth="true">
+  <md-tab *ngFor="let field of fields"  (click)="setCurrentField(field)" dynamicHeight="true" dynamicWidth="true">
     <ng-template md-tab-label>{{field.name}}</ng-template>
       <canvas-tab [field]="field"></canvas-tab>
   </md-tab>

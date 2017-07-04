@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  restServerAddress: 'http://localhost:8080/'
+  restServerAddress: 'http://localhost:8080/vehicles/v1/',
+  webSocketAddress: 'ws://localhost:8080/socket/'
 };

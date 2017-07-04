@@ -1,15 +1,15 @@
-import { environment } from './../environments/environment';
 import { Field } from './field';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { environment } from 'environments/environment';
 
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class VehiclesWSService {
 
-  private fieldsUrl = environment.restServerAddress + 'vehicles/v1/fields';
-  private addFieldUrl = environment.restServerAddress + 'vehicles/v1/field';
+  private fieldsUrl = environment.restServerAddress + 'fields';
+  private addFieldUrl = environment.restServerAddress + 'field';
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) {}
@@ -21,14 +21,13 @@ export class VehiclesWSService {
                     .catch(this.handleError);
   }
 
-  addField(): Promise<boolean> {
-    return this.http.post(this.addFieldUrl, this.headers)
+  addField(field: Field): Promise<boolean> {
+    return this.http.post(this.addFieldUrl, field, this.headers)
                     .map(res => {
                       if (res) {
-                        if (res.status === 201) {
-                          return { status: res.status}
-                        }
+                        return { status: res.status};
                       }
+                      return { status: -1};
                     })
                     .toPromise()
                     .then(response => response.status === 201);

@@ -8,4 +8,6 @@ public interface FieldService {
 
     List<Field> getFieldList();
 
+    boolean addField(Field bean);
+
 }

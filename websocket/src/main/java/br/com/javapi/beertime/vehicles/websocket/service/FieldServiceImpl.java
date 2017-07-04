@@ -1,7 +1,10 @@
 package br.com.javapi.beertime.vehicles.websocket.service;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -19,17 +22,19 @@ class FieldServiceImpl implements FieldService {
 
     @Override
     public List<Field> getFieldList() {
-        //TODO: replace with correct implementation;
-        final Field field = new Field();
-        field.setName("Field From Server");
-        field.setWidth(1600);
-        field.setHeight(900);
+        return Optional.ofNullable(fields)
+                                 .map(IMap::values)
+                                 .orElseGet(Collections::emptyList)
+                                 .stream()
+                                 .collect(Collectors.toList());
+    }
 
-        final Field field2 = new Field();
-        field2.setName("Another Field From Server");
-        field2.setWidth(800);
-        field2.setHeight(600);
-
-        return Arrays.asList(field, field2);
+    @Override
+    public boolean addField(Field bean) {
+        try {
+            return (!fields.containsKey(bean.getId())) && fields.tryPut(bean.getId(), bean, 2, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
