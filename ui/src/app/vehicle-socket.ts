@@ -1,4 +1,3 @@
-import { ngWebSocket } from 'angular-websocket';
 import { SocketInterface } from './socket-interface';
 import { environment } from 'environments/environment';
 

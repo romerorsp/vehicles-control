@@ -1,8 +1,8 @@
-import { CommandsMappingService } from './commands-mapping.service';
-import { ApplicationSocketService } from './application-socket.service';
-import { VehiclesWSService } from './vehicles-w-s.service';
-import { SocketService } from './socket.service';
-import { VehiclesCanvasService } from './vehicles-canvas.service';
+import { CommandsMappingService } from './services/commands-mapping.service';
+import { ApplicationSocketService } from './services/application-socket.service';
+import { VehiclesWSService } from './services/vehicles-w-s.service';
+import { SocketService } from './services/socket.service';
+import { VehiclesCanvasService } from './services/vehicles-canvas.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

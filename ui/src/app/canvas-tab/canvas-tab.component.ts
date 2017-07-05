@@ -1,4 +1,4 @@
-import { VehiclesCanvasService } from './../vehicles-canvas.service';
+import { VehiclesCanvasService } from './../services/vehicles-canvas.service';
 import { Field } from './../field';
 import { Component, OnInit, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
@@ -19,6 +19,12 @@ export class CanvasTabComponent implements OnInit, AfterViewInit {
   spriteWidth= 600;
 
   constructor(private vehicleCanvasService: VehiclesCanvasService) { }
+
+
+
+  createNewVehicle(x: number, y: number): void {
+    
+  }
 
   ngOnInit() {}
 

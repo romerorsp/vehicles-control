@@ -1,5 +1,5 @@
 import { Field } from './../field';
-import { VehiclesWSService } from './../vehicles-w-s.service';
+import { VehiclesWSService } from './../services/vehicles-w-s.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
 

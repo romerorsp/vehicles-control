@@ -1,10 +1,12 @@
-import { Command } from './commands/command';
+import { Command } from '../commands/command';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class CommandsMappingService {
 
-  constructor(private commands: Map<string, Command<any>> = new Map<string, Command<any>>()) { }
+  private commands = new Map<string, Command<any>>();
+
+  constructor() { }
 
   fromName(name: string): Command<any> {
     return this.commands.has(name) ? this.commands.get(name) : null;

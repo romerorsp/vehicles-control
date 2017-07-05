@@ -1,10 +1,10 @@
 import { NewFieldCommand } from './commands/new-field-command';
 import { Command } from './commands/command';
-import { CommandsMappingService } from './commands-mapping.service';
+import { CommandsMappingService } from './services/commands-mapping.service';
 import { ApplicationSocket } from './application-socket';
-import { SocketService } from './socket.service';
+import { SocketService } from './services/socket.service';
 import { CreateNewFieldDialogComponent } from './create-new-field-dialog/create-new-field-dialog.component';
-import { VehiclesWSService } from './vehicles-w-s.service';
+import { VehiclesWSService } from './services/vehicles-w-s.service';
 import { Component, OnInit } from '@angular/core';
 import { MdDialog } from '@angular/material';
 import { Field } from './field';
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
       this.fields = fields;
       this.appSocket = this.socketService.getApplicationSocket();
       this.commandsMappingService.addCommand(new NewFieldCommand('NEW_FIELD', this.fields));
-    }).catch(this.createAppSocket);
+    }).catch(reason => this.createAppSocket());
   }
 
   createAppSocket(): any {
