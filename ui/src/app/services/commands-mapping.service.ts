@@ -1,4 +1,4 @@
-import { Command } from '../commands/command';
+import { Command } from 'app/commands/command';
 import { Injectable } from '@angular/core';
 
 @Injectable()

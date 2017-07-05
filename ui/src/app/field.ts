@@ -1,7 +1,7 @@
 export class Field {
 
-  constructor(private name: string,
-              private width: number,
-              private height: number,
-              private id: string = null) {}
+  constructor(public name: string,
+              public width: number,
+              public height: number,
+              public id: string = null) {}
 }

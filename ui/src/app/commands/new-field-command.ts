@@ -1,4 +1,4 @@
-import { Field } from './../field';
+import { Field } from 'app/field';
 import { Command } from './command';
 export class NewFieldCommand implements Command<Field> {
 

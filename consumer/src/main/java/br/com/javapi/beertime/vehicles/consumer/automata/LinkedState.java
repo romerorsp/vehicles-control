@@ -2,8 +2,9 @@ package br.com.javapi.beertime.vehicles.consumer.automata;
 
 import java.util.Map;
 
-import br.com.javapi.beertime.vehicles.bean.Transition;
 import br.com.javapi.beertime.vehicles.common.bean.State;
+import br.com.javapi.beertime.vehicles.common.bean.StateType;
+import br.com.javapi.beertime.vehicles.common.bean.Transition;
 import lombok.Data;
 
 @Data
@@ -11,12 +12,12 @@ class LinkedState implements State {
     
     private static final long serialVersionUID = 7301118732827399693L;
 
-    private String name;
+    private StateType type;
 
     private Map<Transition, State> transitions;
 
-    public LinkedState(String name) {
-        this.name = name;
+    public LinkedState(StateType type) {
+        this.type = type;
     }
 
     @Override
@@ -26,7 +27,7 @@ class LinkedState implements State {
 
     @Override
     public String toString() {
-        return "LinkedState [name=" + name + "]";
+        return "LinkedState [type=" + type + "]";
     }
 
     @Override
@@ -38,10 +39,10 @@ class LinkedState implements State {
         if (getClass() != obj.getClass())
             return false;
         LinkedState other = (LinkedState) obj;
-        if (name == null) {
-            if (other.name != null)
+        if (type == null) {
+            if (other.type != null)
                 return false;
-        } else if (!name.equals(other.name))
+        } else if (!type.equals(other.type))
             return false;
         return true;
     }
@@ -50,7 +51,12 @@ class LinkedState implements State {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
+    }
+
+    @Override
+    public State nextFor(Transition transition) {
+        return transitions.get(transition);
     }
 }

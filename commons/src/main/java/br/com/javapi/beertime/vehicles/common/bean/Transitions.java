@@ -1,7 +1,5 @@
 package br.com.javapi.beertime.vehicles.common.bean;
 
-import br.com.javapi.beertime.vehicles.bean.Transition;
-
 public enum Transitions implements Transition {
     CREATE,
     MOVE_RIGHT,

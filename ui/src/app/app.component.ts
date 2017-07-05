@@ -1,13 +1,13 @@
 import { NewFieldCommand } from './commands/new-field-command';
-import { Command } from './commands/command';
-import { CommandsMappingService } from './services/commands-mapping.service';
-import { ApplicationSocket } from './application-socket';
-import { SocketService } from './services/socket.service';
-import { CreateNewFieldDialogComponent } from './create-new-field-dialog/create-new-field-dialog.component';
-import { VehiclesWSService } from './services/vehicles-w-s.service';
+import { Command } from 'app/commands/command';
+import { CommandsMappingService } from 'app/services/commands-mapping.service';
+import { ApplicationSocket } from 'app/application-socket';
+import { SocketService } from 'app/services/socket.service';
+import { CreateNewFieldDialogComponent } from 'app/create-new-field-dialog/create-new-field-dialog.component';
+import { VehiclesWSService } from 'app/services/vehicles-w-s.service';
 import { Component, OnInit } from '@angular/core';
 import { MdDialog } from '@angular/material';
-import { Field } from './field';
+import { Field } from 'app/field';
 
 @Component({
   selector: 'app-root',

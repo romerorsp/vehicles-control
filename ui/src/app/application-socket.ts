@@ -1,7 +1,6 @@
-import { CommandsMappingService } from './services/commands-mapping.service';
-import { Field } from './field';
-import { ApplicationSocketService } from './services/application-socket.service';
-import { Command } from './commands/command';
+import { CommandsMappingService } from 'app/services/commands-mapping.service';
+import { Field } from 'app/field';
+import { Command } from 'app/commands/command';
 import { environment } from 'environments/environment';
 
 export class ApplicationSocket {
@@ -9,7 +8,6 @@ export class ApplicationSocket {
   socket: WebSocket;
 
   constructor (private uri: string,
-               private appSocket: ApplicationSocketService,
                private commandsMappingService: CommandsMappingService,
                private template: any = null) {
     this.socket = new WebSocket(environment.webSocketAddress + uri);

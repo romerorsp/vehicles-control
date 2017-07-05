@@ -1,8 +1,8 @@
-import { CommandsMappingService } from './services/commands-mapping.service';
-import { ApplicationSocketService } from './services/application-socket.service';
-import { VehiclesWSService } from './services/vehicles-w-s.service';
-import { SocketService } from './services/socket.service';
-import { VehiclesCanvasService } from './services/vehicles-canvas.service';
+import { CommandsMappingService } from 'app/services/commands-mapping.service';
+import { VehiclesWSService } from 'app/services/vehicles-w-s.service';
+import { SocketService } from 'app/services/socket.service';
+import { VehiclesCanvasService } from 'app/services/vehicles-canvas.service';
+import { VehiclesService } from 'app/services/vehicles.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -47,8 +47,8 @@ import { CreateNewFieldDialogComponent } from './create-new-field-dialog/create-
   providers: [VehiclesCanvasService,
               SocketService,
               VehiclesWSService,
-              ApplicationSocketService,
-              CommandsMappingService],
+              CommandsMappingService,
+              VehiclesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

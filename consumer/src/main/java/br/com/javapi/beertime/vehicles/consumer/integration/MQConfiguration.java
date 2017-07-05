@@ -1,5 +1,8 @@
 package br.com.javapi.beertime.vehicles.consumer.integration;
 
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,7 +15,11 @@ import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.amqp.Amqp;
 import org.springframework.integration.dsl.channel.MessageChannels;
+import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.scheduling.support.PeriodicTrigger;
+
+import br.com.javapi.beertime.vehicles.common.Constants;
 
 @Configuration
 @ImportAutoConfiguration(RabbitAutoConfiguration.class)
@@ -32,10 +39,24 @@ public class MQConfiguration {
         return MessageChannels.queue(queueSize).get();
     }
     
+    @Bean
+    public Queue queue() {
+        return new Queue(Constants.RABBITMQ_QUEUE_NAME, false);
+    }
+    
+    @Bean("amqpConsumerFlow")
     public IntegrationFlow amqpFlow(@Autowired final ConnectionFactory connectionFactory,
-                                                             @Autowired @Qualifier("vehiclesInputChannel") final MessageChannel channel) {
+                                    @Autowired @Qualifier("vehiclesInputChannel") final MessageChannel channel) {
         return IntegrationFlows.from(Amqp.inboundGateway(connectionFactory, amqpQueues))
-                                               .transform(vehicleStateTransformer)
-                                               .channel(channel) .get();
+                               .transform(vehicleStateTransformer)
+                               .channel(channel)
+                               .get();
+    }
+    
+    @Bean(name = PollerMetadata.DEFAULT_POLLER)
+    public PollerMetadata defaultPoller() {
+        PollerMetadata poller = new PollerMetadata();
+        poller.setTrigger(new PeriodicTrigger(1, TimeUnit.MILLISECONDS));
+        return poller;
     }
 }
