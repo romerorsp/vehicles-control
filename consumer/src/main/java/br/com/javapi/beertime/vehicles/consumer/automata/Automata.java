@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
 
+import br.com.javapi.beertime.vehicles.common.bean.LinkedState;
 import br.com.javapi.beertime.vehicles.common.bean.State;
 import br.com.javapi.beertime.vehicles.common.bean.StateType;
 import br.com.javapi.beertime.vehicles.common.bean.Transition;

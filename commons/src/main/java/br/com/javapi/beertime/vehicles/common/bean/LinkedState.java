@@ -1,14 +1,11 @@
-package br.com.javapi.beertime.vehicles.consumer.automata;
+package br.com.javapi.beertime.vehicles.common.bean;
 
 import java.util.Map;
 
-import br.com.javapi.beertime.vehicles.common.bean.State;
-import br.com.javapi.beertime.vehicles.common.bean.StateType;
-import br.com.javapi.beertime.vehicles.common.bean.Transition;
 import lombok.Data;
 
 @Data
-class LinkedState implements State {
+public class LinkedState implements State {
     
     private static final long serialVersionUID = 7301118732827399693L;
 
@@ -58,5 +55,10 @@ class LinkedState implements State {
     @Override
     public State nextFor(Transition transition) {
         return transitions.get(transition);
+    }
+
+    @Override
+    public Transition get() {
+        return type.transition();
     }
 }

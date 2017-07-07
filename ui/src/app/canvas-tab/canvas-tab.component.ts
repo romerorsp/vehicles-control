@@ -3,8 +3,13 @@ import { VehiclesService } from 'app/services/vehicles.service';
 import { SocketService } from 'app/services/socket.service'
 import { Field } from 'app/field';
 import { Vehicle } from 'app/vehicle'
+import { UUID } from 'angular2-uuid';
 import { Component, OnInit, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { globalVehiclesSettings } from "app/global-vehicles-setting";
+import { VehicleState } from "app/vehicle-state";
+import { DrawVehicleCommandService } from "app/services/draw-vehicle-command.service";
+import { VehicleDrawer } from "app/vehicle-drawer";
+import { VehicleRemover } from "app/vehicle-remover";
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -12,17 +17,19 @@ import { globalVehiclesSettings } from "app/global-vehicles-setting";
   templateUrl: './canvas-tab.component.html',
   styleUrls: ['./canvas-tab.component.css']
 })
-export class CanvasTabComponent implements OnInit, AfterViewInit {
+export class CanvasTabComponent implements OnInit, AfterViewInit, VehicleDrawer {
 
   @Input() field: Field;
   @ViewChild('vehicleCanvas') vehicleCanvas: ElementRef;
   private spriteSheet: HTMLImageElement;
   private canvas: CanvasRenderingContext2D;
   private tbDraw: Array<any> = new Array<any>();
+  private clear = false;
 
   constructor(private vehicleCanvasService: VehiclesCanvasService,
               private vehiclesService: VehiclesService,
-              private socket: SocketService) { }
+              private socket: SocketService,
+              private drawVehicleCommandService: DrawVehicleCommandService) {}
 
   ngOnInit() {}
 
@@ -32,21 +39,42 @@ export class CanvasTabComponent implements OnInit, AfterViewInit {
     this.spriteSheet.src = globalVehiclesSettings.spriteImageSource;
     this.canvas.fillStyle = globalVehiclesSettings.fillRectColor;
     this.canvas.fillRect(0, 0, this.field.width, this.field.height);
-
+    this.drawVehicleCommandService.addVehicleDrawer(this.field.id, this as VehicleDrawer);
     this.tick();
   }
 
   newVehicle(event: any) {
     console.log(event);
-    this.vehiclesService.addVehicle(new Vehicle(event.clientX, event.clientY,
+    const uuid = UUID.UUID();
+    this.vehiclesService.addVehicle(new Vehicle(event.layerX,
+                                                event.layerY,
+                                                this.field.id,
+                                                uuid,
                                                 (coordinate) => this.tbDraw.push(coordinate),
-                                                this.socket.createVehicleSocket(this.field, event.clientX, event.clientY)))
+                                                this.socket.createVehicleSocket(this.field, event.layerX, event.layerY, uuid),
+                                                this.vehiclesService as VehicleRemover));
+  }
+
+  drawVehicle(state: VehicleState): void {
+    this.tbDraw.push(Vehicle.toCoordinates(state));
+  }
+
+  drawRemoveVehicle(state: VehicleState): void {
+    this.clearField();
+  }
+
+  clearField(): void {
+    this.clear = true;
   }
 
   tick(): void {
     requestAnimationFrame(() => {
       this.tick();
     });
+    if(this.clear) {
+      this.canvas.fillRect(0, 0, this.field.width, this.field.height);
+      this.clear = false;
+    }
     let item;
     while((item = this.tbDraw.pop()) != null) {
       this.canvas.drawImage(this.spriteSheet,

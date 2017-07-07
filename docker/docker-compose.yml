@@ -1,0 +1,31 @@
+version: '2.1'
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    network_mode: host
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    ports:
+      - "5672:15672"
+#    volumes:
+#      - ./some/vol:/data
+
+  tbaconsumer:
+    image: tbaconsumer
+    container_name: tbaconsumer
+    network_mode: host
+    depends_on:
+      - rabbitmq
+
+  tbawebsocket:
+    image: tbawebsocket
+    container_name: tbawebsocket
+    network_mode: host
+    depends_on:
+      - rabbitmq
+    ports:
+      - "8080:18082"
+      

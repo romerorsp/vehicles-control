@@ -2,6 +2,8 @@ import { CommandsMappingService } from 'app/services/commands-mapping.service';
 import { Field } from 'app/field';
 import { Command } from 'app/commands/command';
 import { environment } from 'environments/environment';
+import { Vehicle } from "app/vehicle";
+import { VehicleState } from "app/vehicle-state";
 
 export class ApplicationSocket {
 
@@ -18,6 +20,12 @@ export class ApplicationSocket {
     this.socket.onopen = template.onopen ? event => template.onopen(event) : event => this.onOpen(event);
     this.socket.onmessage = template.onmessage ? message => template.onmessage(message) : message => this.onMessage(message);
     this.socket.onerror = template.onerror ? event => template.onerror(event) : event => this.onError(event);
+  }
+
+  changeState(vehicle: Vehicle, transition: string) {
+    if(vehicle != null && vehicle.state != transition) {
+      this.socket.send(new VehicleState(vehicle.x, vehicle.y, transition, vehicle.fieldId, vehicle.uuid as string));
+    }
   }
 
   onMessage(message: MessageEvent): any {

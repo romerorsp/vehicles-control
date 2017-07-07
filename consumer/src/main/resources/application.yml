@@ -10,14 +10,22 @@ spring:
     host: localhost
     port: 5672
     addresses: localhost:5672
+    virtual-host: /
     username: admin
     password: admin
+    dynamic: true
+    cache:
+      connection:
+        mode: connection
+    listener:
+      simple:
+        auto-startup: true
+        acknowledge-mode: auto
     
     
 vehicles:
   mq:
     consumer:
-      queues: vehicles.state
       queue:
         size: 200
   automata:

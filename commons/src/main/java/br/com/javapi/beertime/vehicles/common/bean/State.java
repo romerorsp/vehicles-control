@@ -10,4 +10,6 @@ public interface State extends Serializable {
     State nextFor(Transition transition);
     
     StateType getType();
+
+    Transition get();
 }

@@ -24,6 +24,7 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 
 import br.com.javapi.beertime.vehicles.common.bean.Field;
+import br.com.javapi.beertime.vehicles.common.bean.Vehicle;
 
 @Configuration
 public class CacheConfiguration {
@@ -112,9 +113,16 @@ public class CacheConfiguration {
     }
     
     @Bean(name="fieldsMap")
-    public IMap<String, Field> createBatchOperationsMap() {
+    public IMap<String, Field> createFieldsMap() {
         HazelcastInstance instance = context.getBean(HazelcastInstance.class);
         instance.getConfig().addMapConfig(new MapConfig("fieldsMap"));
         return instance.getMap("fieldsMap");
+    }
+    
+    @Bean(name="vehiclesMap")
+    public IMap<String, Vehicle> createBatchOperationsMap() {
+        HazelcastInstance instance = context.getBean(HazelcastInstance.class);
+        instance.getConfig().addMapConfig(new MapConfig("vehiclesMap"));
+        return instance.getMap("vehiclesMap");
     }
 }

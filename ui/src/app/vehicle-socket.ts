@@ -1,5 +1,6 @@
 import { environment } from 'environments/environment';
 import {CommandsMappingService } from 'app/services/commands-mapping.service';
+import { VehicleState } from "app/vehicle-state";
 
 export class VehicleSocket {
 
@@ -16,6 +17,14 @@ export class VehicleSocket {
     this.socket.onopen = template.onopen ? event => template.onopen(event) : event => this.onOpen(event);
     this.socket.onmessage = template.onmessage ? message => template.onmessage(message) : message => this.onMessage(message);
     this.socket.onerror = template.onerror ? event => template.onerror(event) : event => this.onError(event);
+  }
+
+  send(state: VehicleState): void {
+    this.socket.send(state);
+  }
+
+  close(): void {
+    this.socket.close();
   }
 
   onMessage(message: MessageEvent): any {

@@ -21,6 +21,7 @@ import { MaterialModule,
 import { AppComponent } from './app.component';
 import { CanvasTabComponent } from './canvas-tab/canvas-tab.component';
 import { CreateNewFieldDialogComponent } from './create-new-field-dialog/create-new-field-dialog.component';
+import { DrawVehicleCommandService } from "app/services/draw-vehicle-command.service";
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { CreateNewFieldDialogComponent } from './create-new-field-dialog/create-
               SocketService,
               VehiclesWSService,
               CommandsMappingService,
-              VehiclesService],
+              VehiclesService,
+              DrawVehicleCommandService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

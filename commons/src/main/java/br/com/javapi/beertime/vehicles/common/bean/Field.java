@@ -1,8 +1,6 @@
 package br.com.javapi.beertime.vehicles.common.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import lombok.Data;
 
@@ -11,8 +9,6 @@ public class Field implements Serializable {
     
     private static final long serialVersionUID = 3889661368060744791L;
 
-    private List<Vehicle> vehicles = new ArrayList<>();
-    
     private String name;
     
     private int width;
@@ -33,10 +29,6 @@ public class Field implements Serializable {
     public void setName(String name) {
         this.name = name;
         this.id = name.toLowerCase().replaceAll(" ", "-");
-    }
-
-    public void addVehicle(Vehicle vehicle) {
-        this.vehicles.add(vehicle);
     }
 
     @Override
@@ -62,9 +54,5 @@ public class Field implements Serializable {
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
-    }
-
-    public void removeVehicle(Vehicle vehicle) {
-        this.vehicles.remove(vehicle);
     }
 }

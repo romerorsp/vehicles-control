@@ -1,7 +1,10 @@
-package br.com.javapi.beertime.vehicles.consumer.integration;
+package br.com.javapi.beertime.vehicles.websocket.integration;
 
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Exchange;
@@ -12,8 +15,6 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -24,21 +25,24 @@ import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.com.javapi.beertime.vehicles.common.Constants;
 
 @Configuration
-@ImportAutoConfiguration(RabbitAutoConfiguration.class)
-public class MQConfiguration {
+public class IntegrationFlowConfiguration {
 
-    @Value("${vehicles.mq.consumer.queue.size:200}")
-    private int queueSize;
+    private static final Logger LOGGER = LoggerFactory.getLogger(IntegrationFlowConfiguration.class);
     
-    @Autowired
-    private VehicleStateTransformer vehicleStateTransformer;
-
-    @Bean(name="vehiclesInputChannel")
-    public MessageChannel createVehiclesInputChannel() {
-        return MessageChannels.queue(queueSize).get();
+    @Value("${broker.mq.producer.queue.size:100}")
+    private String size;
+    
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    
+    @Bean("vehicleStateChannel")
+    public MessageChannel createVehicleStateChannel() {
+        return MessageChannels.queue(size).get();
     }
     
     @Bean(name="vehicleXChange")
@@ -89,13 +93,22 @@ public class MQConfiguration {
                              .noargs();
     }
     
-    @Bean("amqpConsumerFlow")
+    @Bean("amqpProducerFlow")
     public IntegrationFlow amqpFlow(@Autowired final ConnectionFactory connectionFactory,
-                                    @Autowired @Qualifier("vehiclesInputChannel") final MessageChannel channel,
-                                    @Autowired @Qualifier("vehicleQ") Queue queue) {
-        return IntegrationFlows.from(Amqp.inboundAdapter(connectionFactory, queue))
-                               .transform(vehicleStateTransformer)
-                               .channel(channel)
+                                    @Autowired final AmqpTemplate amqpTemplate,
+                                    @Autowired @Qualifier("vehicleStateChannel") final MessageChannel channel) {
+        return IntegrationFlows.from(channel)
+                               .transform(value -> {
+                                    try {
+                                        return MAPPER.writeValueAsString(value);
+                                    } catch (JsonProcessingException e) {
+                                        LOGGER.error("It wasn't possible to write the value [{}] as string", e);
+                                        return null;
+                                    }
+                               })
+                               .handle(Amqp.outboundAdapter(amqpTemplate)
+                                           .routingKey("")
+                                           .exchangeName(Constants.RABBIT_EXCHANGE_NAME))
                                .get();
     }
     

@@ -1,4 +1,5 @@
 export const globalVehiclesSettings = {
+    defaultVelocity: 200,
     vehiclesDefaultWidth: 50,
     vehiclesDefaultHeight: 50,
     spriteImageSource: 'assets/img/vehicles-sprite.png',

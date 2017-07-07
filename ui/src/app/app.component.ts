@@ -5,7 +5,8 @@ import { ApplicationSocket } from 'app/application-socket';
 import { SocketService } from 'app/services/socket.service';
 import { CreateNewFieldDialogComponent } from 'app/create-new-field-dialog/create-new-field-dialog.component';
 import { VehiclesWSService } from 'app/services/vehicles-w-s.service';
-import { Component, OnInit } from '@angular/core';
+import { VehiclesService } from 'app/services/vehicles.service'
+import { Component, OnInit, HostListener } from '@angular/core';
 import { MdDialog } from '@angular/material';
 import { Field } from 'app/field';
 
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
   constructor(private vehiclesWS: VehiclesWSService,
               private socketService: SocketService,
               private commandsMappingService: CommandsMappingService,
+              private vehiclesService: VehiclesService,
               private dialog: MdDialog) {}
 
   ngOnInit(): void {
@@ -53,5 +55,10 @@ export class AppComponent implements OnInit {
 
   createNewField(): void {
     this.dialog.open(CreateNewFieldDialogComponent);
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) { 
+    this.vehiclesService.handle(event);
   }
 }
