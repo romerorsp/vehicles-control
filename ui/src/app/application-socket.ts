@@ -24,7 +24,7 @@ export class ApplicationSocket {
 
   changeState(vehicle: Vehicle, transition: string) {
     if(vehicle != null && vehicle.state != transition) {
-      this.socket.send(new VehicleState(vehicle.x, vehicle.y, transition, vehicle.fieldId, vehicle.uuid as string));
+      this.socket.send(JSON.stringify(new VehicleState(vehicle.x, vehicle.y, transition, vehicle.fieldId, vehicle.uuid as string)));
     }
   }
 
@@ -38,19 +38,16 @@ export class ApplicationSocket {
 
   onOpen(event: Event): any {
     // Nothing to do here for now...
-    console.log('open: ' + event);
-    console.log(event);
+    console.log('Socket open');
   }
 
   onClose(event: Event): any {
     //TODO: Take the opportunity to advice the user that the connection was lost...
-    console.log('close' + event);
-    console.log(event);
+    console.log('Socket close');
   }
 
   onError(event: Event): any {
     // I'm assuming it never fails... This should be reviewed in a real application.
-    console.log('error' + event);
-    console.log(event);
+    console.log('Socket error');
   }
 }

@@ -30,14 +30,14 @@ public class AutomataService {
 
     @ServiceActivator(inputChannel="vehiclesInputChannel")
     public void consume(VehicleStateDTO state) {
-        if(!fields.containsKey(state.getFieldId())) {
+        if(state.getFieldId() == null || !fields.containsKey(state.getFieldId())) {
             throw new RuntimeException("There was an attempt to record vehicle for unexisting field");
         }
         final Vehicle vehicle = new Vehicle(state.getFieldId(), state.getVehicleId(), automata.getInitial().nextFor(state.getTransition()));
         if(state.getTransition() == Transitions.CREATE) {
             if(vehicles.values()
                        .stream()
-                       .filter(v -> v.getFieldId().equals(state.getFieldId()))
+                       .filter(v -> v.getFieldId() != null && v.getFieldId().equals(state.getFieldId()))
                        .map(Vehicle::getId)
                        .anyMatch(state.getVehicleId()::equalsIgnoreCase)) {
                 throw new RuntimeException("There was an attempt to record a vehicle that already exists");

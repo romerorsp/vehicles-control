@@ -20,7 +20,7 @@ export class VehicleSocket {
   }
 
   send(state: VehicleState): void {
-    this.socket.send(state);
+    this.socket.send(JSON.stringify(state));
   }
 
   close(): void {
@@ -37,19 +37,16 @@ export class VehicleSocket {
 
   onOpen(event: Event): any {
     // Nothing to do here for now...
-    console.log('open: ' + event);
-    console.log(event);
+    console.log('Socket open');
   }
 
   onClose(event: Event): any {
     //TODO: Take the opportunity to advice the user that the connection was lost...
-    console.log('close' + event);
-    console.log(event);
+    console.log('Socket close');
   }
 
   onError(event: Event): any {
     // I'm assuming it never fails... This should be reviewed in a real application.
-    console.log('error' + event);
-    console.log(event);
+    console.log('Socket error');
   }
 }

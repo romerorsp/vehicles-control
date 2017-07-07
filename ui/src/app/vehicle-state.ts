@@ -1,7 +1,7 @@
 export class VehicleState {
     
-    vehicleId: string;
-    fieldId: string;
+    public vehicleId: string;
+    public fieldId: string;
     public transition: string;
 
     public posY: number;

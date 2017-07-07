@@ -9,7 +9,9 @@ export class DrawVehicleCommand implements Command<VehicleState> {
   constructor (private name: string, private drawers: Map<string, VehicleDrawer>) {}
  
   execute(state: VehicleState) {
-    this.drawers.get(state.fieldId).drawVehicle(state);
+    if(this.drawers.get(state.fieldId) != null) {
+      this.drawers.get(state.fieldId).drawVehicle(state);
+    }
   }
 
   getName(): string {

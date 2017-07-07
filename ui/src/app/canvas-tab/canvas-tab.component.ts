@@ -44,7 +44,6 @@ export class CanvasTabComponent implements OnInit, AfterViewInit, VehicleDrawer 
   }
 
   newVehicle(event: any) {
-    console.log(event);
     const uuid = UUID.UUID();
     this.vehiclesService.addVehicle(new Vehicle(event.layerX,
                                                 event.layerY,

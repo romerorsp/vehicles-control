@@ -21,6 +21,7 @@ public class Vehicle implements Serializable {
     private String fieldId;
 
     public Vehicle(final String fieldId, final String id, final State state) {
+        this.fieldId = fieldId;
         this.id = id;
         this.state = state;
     }
