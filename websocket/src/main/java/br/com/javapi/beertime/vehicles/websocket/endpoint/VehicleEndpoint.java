@@ -120,18 +120,4 @@ public class VehicleEndpoint implements VehiclesWebSocket {
             }
         }));
     }
-
-    @Override
-    public void notifyChangeState(VehicleStateDTO state) {
-        Command<VehicleStateDTO> command = commands.getCommand(CommandTypes.CHANGE_VEHICLE_STATE, state);
-        this.lastSession.ifPresent(session -> session.getOpenSessions()
-                                                     .stream()
-                                                     .forEach(open -> {
-            try {
-                open.getBasicRemote().sendObject(command);
-            } catch (IOException | EncodeException e) {
-                LOGGER.error("Severe Error while sending vehicle state [{}] to the session [{}]", state, open.getId(), e);
-            }
-        }));        
-    }
 }

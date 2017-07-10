@@ -13,6 +13,11 @@
 		<artifactId>vehicles-control</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	
+	<properties>
+		<finalName>${project.artifactId}-${project.version}-${maven.build.timestamp}</finalName>
+		<start-class>br.com.javapi.beertime.vehicles.websocket.WSocketApplication</start-class>
+	</properties>
 
 	<developers>
 		<developer>
@@ -132,12 +137,12 @@
 								<configuration>
 									<imageName>tbawebsocket</imageName>
 									<baseImage>java</baseImage>
-									<entryPoint>["java", "-Dspring.profiles.active=default", "-jar", "${project.finalName}.jar"]</entryPoint>
+									<entryPoint>["java", "-Dspring.profiles.active=docker", "-jar", "${finalName}.jar"]</entryPoint>
 									<resources>
 										<resource>
 											<targetPath>/</targetPath>
 											<directory>${project.build.directory}</directory>
-											<include>${project.finalname}.jar</include>
+											<include>${finalName}.jar</include>
 										</resource>
 									</resources>
 								</configuration>
@@ -156,6 +161,21 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring-boot.version}</version>
+
+				<configuration>
+					<finalName>${finalName}</finalName>
+					<mainClass>${start-class}</mainClass>
+					<layout>ZIP</layout>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>springfy</id>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,13 +1,14 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Vehicle } from "app/vehicle";
 import { VehicleRemover } from "app/vehicle-remover";
 import { DrawVehicleCommandService } from "app/services/draw-vehicle-command.service";
 import { SocketService } from "app/services/socket.service";
 import { CommandsMappingService } from "app/services/commands-mapping.service";
 import { ChangeVehicleStateCommand } from "app/commands/change-vehicle-state-command";
+import { globalVehiclesSettings } from "app/global-vehicles-setting";
 
 @Injectable()
-export class VehiclesService implements VehicleRemover, OnInit {
+export class VehiclesService implements VehicleRemover {
 
   private vehicles: Array<Vehicle> = new Array<Vehicle>();
 
@@ -15,15 +16,32 @@ export class VehiclesService implements VehicleRemover, OnInit {
 
   constructor(private drawVehicleCommandService: DrawVehicleCommandService,
               private socketService: SocketService,
-              private commandsMappingService: CommandsMappingService) { }
-
-  ngOnInit(): void {
+              private commandsMappingService: CommandsMappingService) {
     this.commandsMappingService.addCommand(new ChangeVehicleStateCommand('CHANGE_VEHICLE_STATE', this.vehicles));
+  }
+
+  isSelected(id: string): boolean {
+    return (!this.current == null) && this.current.uuid === id;
+  }
+
+  selectVehicle(x: number, y: number): boolean {
+    const vehicle = this.vehicles.find(v => {
+      v.colorType = globalVehiclesSettings.unselectedColorType;
+      return (x >= (v.x-globalVehiclesSettings.vehiclesDefaultWidth) && x <= (v.x+globalVehiclesSettings.vehiclesDefaultWidth)) ||
+             (y >= (v.y-globalVehiclesSettings.vehiclesDefaultHeight) && y <= (v.y+globalVehiclesSettings.vehiclesDefaultHeight))
+    });
+    if(vehicle != null) {
+      this.current = vehicle;
+      vehicle.colorType = globalVehiclesSettings.selectedColorType;
+      return true;
+    }
+    return false;
   }
 
   addVehicle(vehicle: Vehicle): boolean {
     this.vehicles.push(vehicle);
     this.current = vehicle;
+    vehicle.colorType = globalVehiclesSettings.selectedColorType;
     return true;
   }
 

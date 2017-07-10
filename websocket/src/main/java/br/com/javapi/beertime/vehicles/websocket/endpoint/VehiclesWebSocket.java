@@ -7,6 +7,4 @@ public interface VehiclesWebSocket {
     public void notifyVehicleState(VehicleStateDTO sto);
 
     public void notifyVehicleRemoved(VehicleStateDTO dto);
-
-    public void notifyChangeState(VehicleStateDTO state);
 }

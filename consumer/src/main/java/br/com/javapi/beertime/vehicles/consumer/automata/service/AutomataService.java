@@ -33,7 +33,8 @@ public class AutomataService {
         if(state.getFieldId() == null || !fields.containsKey(state.getFieldId())) {
             throw new RuntimeException("There was an attempt to record vehicle for unexisting field");
         }
-        final Vehicle vehicle = new Vehicle(state.getFieldId(), state.getVehicleId(), automata.getInitial().nextFor(state.getTransition()));
+        final Vehicle vehicle = vehicles.getOrDefault(state.getVehicleId(),
+                                                      new Vehicle(state.getFieldId(), state.getVehicleId(), automata.getInitial().nextFor(state.getTransition())));
         if(state.getTransition() == Transitions.CREATE) {
             if(vehicles.values()
                        .stream()
@@ -44,6 +45,7 @@ public class AutomataService {
             }
             vehicle.setPosX(state.getPosX());
             vehicle.setPosY(state.getPosY());
+            vehicle.setState(vehicle.getState().nextFor(state.getTransition()));
             vehicles.put(vehicle.getId(), vehicle);
         } else {
             if(vehicle.getState().getType() == StateType.END) {
@@ -51,6 +53,7 @@ public class AutomataService {
             } else {
                 vehicle.setPosX(state.getPosX());
                 vehicle.setPosY(state.getPosY());
+                vehicle.setState(vehicle.getState().nextFor(state.getTransition()));
                 vehicles.put(vehicle.getId(), vehicle);
             }
         }

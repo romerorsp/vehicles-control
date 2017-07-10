@@ -27,11 +27,11 @@ export class CanvasTabComponent implements OnInit, AfterViewInit, VehicleDrawer 
   private clear = false;
 
   constructor(private vehicleCanvasService: VehiclesCanvasService,
-              private vehiclesService: VehiclesService,
-              private socket: SocketService,
-              private drawVehicleCommandService: DrawVehicleCommandService) {}
+    private vehiclesService: VehiclesService,
+    private socket: SocketService,
+    private drawVehicleCommandService: DrawVehicleCommandService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngAfterViewInit(): void {
     this.canvas = this.vehicleCanvas.nativeElement.getContext('2d');
@@ -43,19 +43,25 @@ export class CanvasTabComponent implements OnInit, AfterViewInit, VehicleDrawer 
     this.tick();
   }
 
-  newVehicle(event: any) {
+  doAction(event: any): void {
+    if (!this.vehiclesService.selectVehicle(event.layerX, event.layerY)) {
+      this.newVehicle(event);
+    }
+  }
+
+  newVehicle(event: any): void {
     const uuid = UUID.UUID();
     this.vehiclesService.addVehicle(new Vehicle(event.layerX,
-                                                event.layerY,
-                                                this.field.id,
-                                                uuid,
-                                                (coordinate) => this.tbDraw.push(coordinate),
-                                                this.socket.createVehicleSocket(this.field, event.layerX, event.layerY, uuid),
-                                                this.vehiclesService as VehicleRemover));
+      event.layerY,
+      this.field.id,
+      uuid,
+      (coordinate) => this.tbDraw.push(coordinate),
+      this.socket.createVehicleSocket(this.field, event.layerX, event.layerY, uuid),
+      this.vehiclesService as VehicleRemover));
   }
 
   drawVehicle(state: VehicleState): void {
-    this.tbDraw.push(Vehicle.toCoordinates(state));
+    this.tbDraw.push(Vehicle.toCoordinates(state, this.vehiclesService.isSelected(state.vehicleId)? "selected": "unselected"));
   }
 
   drawRemoveVehicle(state: VehicleState): void {
@@ -70,21 +76,22 @@ export class CanvasTabComponent implements OnInit, AfterViewInit, VehicleDrawer 
     requestAnimationFrame(() => {
       this.tick();
     });
-    if(this.clear) {
+    if (this.clear) {
       this.canvas.fillRect(0, 0, this.field.width, this.field.height);
       this.clear = false;
     }
+
     let item;
-    while((item = this.tbDraw.pop()) != null) {
+    while ((item = this.tbDraw.pop()) != null) {
       this.canvas.drawImage(this.spriteSheet,
-                            item.left,
-                            item.top,
-                            item.width,
-                            item.height,
-                            item.posX,
-                            item.posY,
-                            globalVehiclesSettings.vehiclesDefaultWidth,
-                            globalVehiclesSettings.vehiclesDefaultHeight);
+        item.left,
+        item.top,
+        item.width,
+        item.height,
+        item.posX,
+        item.posY,
+        globalVehiclesSettings.vehiclesDefaultWidth,
+        globalVehiclesSettings.vehiclesDefaultHeight);
     }
   }
 
@@ -93,15 +100,15 @@ export class CanvasTabComponent implements OnInit, AfterViewInit, VehicleDrawer 
   //     this.tick();
   //   });
   //   this.canvas.drawImage(this.spriteSheet, 0, 0, 45, 45, 0, 0, 50, 50);
-  //   this.canvas.drawImage(this.spriteSheet, 47, 0, 45, 45, 50, 0, 50, 50);
+    // this.canvas.drawImage(this.spriteSheet, 47, 0, 45, 45, 50, 0, 50, 50);
   //   this.canvas.drawImage(this.spriteSheet, 94, 0, 45, 45, 100, 0, 50, 50);
 
   //   this.canvas.drawImage(this.spriteSheet, 0, 50, 45, 45, 0, 50, 50, 50);
-  //   this.canvas.drawImage(this.spriteSheet, 47, 50, 45, 45, 50, 50, 50, 50);
+    // this.canvas.drawImage(this.spriteSheet, 47, 50, 45, 45, 50, 50, 50, 50);
   //   this.canvas.drawImage(this.spriteSheet, 94, 50, 45, 45, 100, 50, 50, 50);
 
   //   this.canvas.drawImage(this.spriteSheet, 0, 98, 45, 45, 0, 100, 50, 50);
-  //   this.canvas.drawImage(this.spriteSheet, 47, 98, 45, 45, 50, 100, 50, 50);
+    // this.canvas.drawImage(this.spriteSheet, 47, 98, 45, 45, 50, 100, 50, 50);
   //   this.canvas.drawImage(this.spriteSheet, 94, 98, 45, 45, 100, 100, 50, 50);
 
 

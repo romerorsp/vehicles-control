@@ -6,6 +6,7 @@ import { VehicleRemover } from "app/vehicle-remover";
 
 export class Vehicle {
 
+    public colorType: string = "selected";
     public uuid: UUID;
     public y: number;
     public x: number;
@@ -13,14 +14,33 @@ export class Vehicle {
     private timerToken: any;
     public state: string = "CREATE";
 
-    private static COORDINATES: Map<string, any> = new Map(
+    private static COORDINATES: Map<string, Map<string, any>> = new Map(
         [
-            ["CREATE", globalVehiclesSettings.downCarCoordinates],
-            ["FINISH", globalVehiclesSettings.downCarCoordinates],
-            ["MOVE_DOWN", globalVehiclesSettings.downCarCoordinates],
-            ["MOVE_UP", globalVehiclesSettings.upCarCoordinates],
-            ["MOVE_LEFT", globalVehiclesSettings.leftCarCoordinates],
-            ["MOVE_RIGHT", globalVehiclesSettings.rightCarCoordinates],
+            [
+                globalVehiclesSettings.unselectedColorType,
+                new Map([
+                    ["CREATE", globalVehiclesSettings.unselected.downCarCoordinates],
+                    ["PAUSE", globalVehiclesSettings.unselected.downCarCoordinates],
+                    ["FINISH", globalVehiclesSettings.unselected.downCarCoordinates],
+                    ["MOVE_DOWN", globalVehiclesSettings.unselected.downCarCoordinates],
+                    ["MOVE_UP", globalVehiclesSettings.unselected.upCarCoordinates],
+                    ["MOVE_LEFT", globalVehiclesSettings.unselected.leftCarCoordinates],
+                    ["MOVE_RIGHT", globalVehiclesSettings.unselected.rightCarCoordinates],
+                ])
+
+            ],
+            [
+                globalVehiclesSettings.selectedColorType,
+                new Map([
+                    ["CREATE", globalVehiclesSettings.selected.downCarCoordinates],
+                    ["PAUSE", globalVehiclesSettings.selected.downCarCoordinates],
+                    ["FINISH", globalVehiclesSettings.selected.downCarCoordinates],
+                    ["MOVE_DOWN", globalVehiclesSettings.selected.downCarCoordinates],
+                    ["MOVE_UP", globalVehiclesSettings.selected.upCarCoordinates],
+                    ["MOVE_LEFT", globalVehiclesSettings.selected.leftCarCoordinates],
+                    ["MOVE_RIGHT", globalVehiclesSettings.selected.rightCarCoordinates],
+                ])
+            ]
         ]
     );
 
@@ -36,16 +56,17 @@ export class Vehicle {
         this.fieldId = fieldId;
         this.uuid = uuid;
         const activity = () => {
-            if (this.state === "CREATE") {
-                socket.send(new VehicleState(x, y, "PAUSE", this.fieldId, this.uuid as string));
+            
+            if (this.state == null) {
+                socket.send(new VehicleState(x, y, "CREATE", this.fieldId, this.uuid as string));
             } else if (this.state === "END" || this.state === "FINISH") {
                 this.socket.close();
                 this.remover.removeVehicle(this);
                 clearInterval(this.timerToken);
             } else if (this.state === "MOVE_UP") {
-                socket.send(new VehicleState(x, ++y, "MOVE_UP", this.fieldId, this.uuid as string));
+                socket.send(new VehicleState(x, --y, "MOVE_UP", this.fieldId, this.uuid as string));
             } else if (this.state === "MOVE_DOWN") {
-                socket.send(new VehicleState(x, --y, "MOVE_DOWN", this.fieldId, this.uuid as string));
+                socket.send(new VehicleState(x, ++y, "MOVE_DOWN", this.fieldId, this.uuid as string));
             } else if (this.state === "MOVE_LEFT") {
                 socket.send(new VehicleState(--x, y, "MOVE_LEFT", this.fieldId, this.uuid as string));
             } else if (this.state === "MOVE_RIGHT") {
@@ -55,7 +76,13 @@ export class Vehicle {
         this.timerToken = setInterval(activity, globalVehiclesSettings.defaultVelocity);
     }
 
-    static toCoordinates(state: VehicleState): any {
-        return Object.assign({ posX: state.posX, posY: state.posY }, Vehicle.COORDINATES.get(state.transition));
+    static toCoordinates(state: VehicleState, colorType: string): any {
+        const result = Object.assign({ posX: state.posX, posY: state.posY });
+        const coordinate = Vehicle.COORDINATES.get(colorType).get(state.transition);
+        result.left = coordinate.left;
+        result.top = coordinate.top;
+        result.width = coordinate.width;
+        result.height = coordinate.height;
+        return result;
     }
 }

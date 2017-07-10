@@ -4,28 +4,38 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
-    network_mode: host
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
     ports:
-      - "5672:15672"
-#    volumes:
-#      - ./some/vol:/data
+      - "15672:15672"
+      - "5672:5672"
 
   tbaconsumer:
     image: tbaconsumer
     container_name: tbaconsumer
-    network_mode: host
     depends_on:
       - rabbitmq
 
   tbawebsocket:
     image: tbawebsocket
     container_name: tbawebsocket
-    network_mode: host
     depends_on:
       - rabbitmq
     ports:
       - "8080:18082"
+    expose:
+      - "8080"
+
+  tbafrontend:
+    image: tbafrontend
+    container_name: tbafrontend
+    depends_on:
+      - tbawebsocket
+    ports:
+      - "9000:80"
       
+networks: 
+  default:
+    external:
+      name: ci_vpc

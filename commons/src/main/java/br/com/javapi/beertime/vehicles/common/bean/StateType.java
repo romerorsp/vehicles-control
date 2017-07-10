@@ -13,18 +13,27 @@ public enum StateType {
 
     private Transition transition;
 
-    private StateType(Transition transition) {
+    private StateType(final Transition transition) {
         this.transition = transition;
     }
     
-    public static StateType fromString(String name) {
-        return Arrays.stream(StateType.values())
-                     .filter(type -> type.toString().equals(name))
-                     .findAny()
-                     .orElse(INITIAL);
+    public static StateType fromString(final String name) {
+        return
+            Arrays.stream(StateType.values())
+                  .filter(type -> type.toString().equals(name))
+                  .findAny()
+                  .orElse(INITIAL);
     }
 
     public Transition transition() {
         return transition;
+    }
+    
+    public static StateType fromTransition(final Transition transition) {
+        return
+        Arrays.stream(StateType.values())
+              .filter(state -> state.transition.equals(transition))
+              .findAny()
+              .orElse(INITIAL);
     }
 }

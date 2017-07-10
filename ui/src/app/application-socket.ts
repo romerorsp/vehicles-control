@@ -38,16 +38,16 @@ export class ApplicationSocket {
 
   onOpen(event: Event): any {
     // Nothing to do here for now...
-    console.log('Socket open');
+    console.log('App Socket open');
   }
 
   onClose(event: Event): any {
     //TODO: Take the opportunity to advice the user that the connection was lost...
-    console.log('Socket close');
+    console.log('App Socket close');
   }
 
   onError(event: Event): any {
     // I'm assuming it never fails... This should be reviewed in a real application.
-    console.log('Socket error');
+    console.log('App Socket error');
   }
 }

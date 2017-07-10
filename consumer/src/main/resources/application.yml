@@ -31,11 +31,11 @@ vehicles:
   automata:
     script:
       - initial->CREATE:created,PAUSE:initial,FINISH:initial,MOVE_UP:initial,MOVE_DOWN:initial,MOVE_LEFT:initial,MOVE_RIGHT:initial
-      - created->PAUSE:created,CREATE:created,FINISH:end,MOVE_UP:MovingUp,MOVE_DOWN:MovingDown,MOVE_LEFT:MovingLeft,MOVE_RIGHT:MovingRight
-      - MovingUp->PAUSE:created,CREATE:MovingUp,FINISH:end,MOVE_UP:MovingUp,MOVE_DOWN:MovingDown,MOVE_LEFT:MovingLeft,MOVE_RIGHT:MovingRight
-      - MovingDown->PAUSE:created,CREATE:MovingDown,FINISH:end,MOVE_UP:MovingUp,MOVE_DOWN:MovingDown,MOVE_LEFT:MovingLeft,MOVE_RIGHT:MovingRight
-      - MovingLeft->PAUSE:created,CREATE:MovingLeft,FINISH:end,MOVE_UP:MovingUp,MOVE_DOWN:MovingDown,MOVE_LEFT:MovingLeft,MOVE_RIGHT:MovingRight
-      - MovingRight->PAUSE:created,CREATE:MovingRight,FINISH:end,MOVE_UP:MovingUp,MOVE_DOWN:MovingDown,MOVE_LEFT:MovingLeft,MOVE_RIGHT:MovingRight
+      - created->PAUSE:created,CREATE:created,FINISH:end,MOVE_UP:Moving_Up,MOVE_DOWN:Moving_Down,MOVE_LEFT:Moving_Left,MOVE_RIGHT:Moving_Right
+      - Moving_Up->PAUSE:created,CREATE:Moving_Up,FINISH:end,MOVE_UP:Moving_Up,MOVE_DOWN:Moving_Down,MOVE_LEFT:Moving_Left,MOVE_RIGHT:Moving_Right
+      - Moving_Down->PAUSE:created,CREATE:Moving_Down,FINISH:end,MOVE_UP:Moving_Up,MOVE_DOWN:Moving_Down,MOVE_LEFT:Moving_Left,MOVE_RIGHT:Moving_Right
+      - Moving_Left->PAUSE:created,CREATE:Moving_Left,FINISH:end,MOVE_UP:Moving_Up,MOVE_DOWN:Moving_Down,MOVE_LEFT:Moving_Left,MOVE_RIGHT:Moving_Right
+      - Moving_Right->PAUSE:created,CREATE:Moving_Right,FINISH:end,MOVE_UP:Moving_Up,MOVE_DOWN:Moving_Down,MOVE_LEFT:Moving_Left,MOVE_RIGHT:Moving_Right
       - End->
 
 hazelcast:

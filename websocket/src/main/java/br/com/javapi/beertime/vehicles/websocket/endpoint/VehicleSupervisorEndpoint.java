@@ -37,9 +37,6 @@ public class VehicleSupervisorEndpoint implements SupervisorWebSocket {
     @Resource(name = "vehicleStateChannel")
     private MessageChannel channel;
 
-    @Autowired
-    private VehiclesWebSocket vehicleWSocket;
-
     private Optional<Session> lastSession = Optional.empty();
 
     @OnOpen
@@ -49,7 +46,7 @@ public class VehicleSupervisorEndpoint implements SupervisorWebSocket {
 
     @OnMessage
     public void onMessage(Session session, VehicleStateDTO state) {
-        vehicleWSocket.notifyChangeState(state);
+        this.notifyChangeState(state);
     }
 
     @Override
@@ -62,5 +59,18 @@ public class VehicleSupervisorEndpoint implements SupervisorWebSocket {
                 LOGGER.error("Severe Error while sending field [{}] to the session [{}]", field, session.getId(), e);
             }
         }));
+    }
+    
+    public void notifyChangeState(VehicleStateDTO state) {
+        Command<VehicleStateDTO> command = commands.getCommand(CommandTypes.CHANGE_VEHICLE_STATE, state);
+        this.lastSession.ifPresent(session -> session.getOpenSessions()
+                                                     .stream()
+                                                     .forEach(open -> {
+            try {
+                open.getBasicRemote().sendObject(command);
+            } catch (IOException | EncodeException e) {
+                LOGGER.error("Severe Error while sending vehicle state [{}] to the session [{}]", state, open.getId(), e);
+            }
+        }));        
     }
 }
