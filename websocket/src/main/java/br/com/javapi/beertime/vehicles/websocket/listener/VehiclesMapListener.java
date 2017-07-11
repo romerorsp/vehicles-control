@@ -34,22 +34,22 @@ public class VehiclesMapListener implements EntryAddedListener<String, Vehicle>,
     }
 
     @Override
-    public void entryUpdated(EntryEvent<String, Vehicle> entry) {
+    public void entryUpdated(final EntryEvent<String, Vehicle> entry) {
         supervisor.notifyVehicleState(entry.getValue().toDTO());
     }
 
     @Override
-    public void entryMerged(EntryEvent<String, Vehicle> entry) {
+    public void entryMerged(final EntryEvent<String, Vehicle> entry) {
         supervisor.notifyVehicleState(entry.getValue().toDTO());
     }
 
     @Override
-    public void entryAdded(EntryEvent<String, Vehicle> entry) {
+    public void entryAdded(final EntryEvent<String, Vehicle> entry) {
         supervisor.notifyVehicleState(entry.getValue().toDTO());
     }
 
     @Override
-    public void entryRemoved(EntryEvent<String, Vehicle> entry) {
+    public void entryRemoved(final EntryEvent<String, Vehicle> entry) {
         supervisor.notifyVehicleRemoved(entry.getValue().toDTO());
     }
 }

@@ -33,7 +33,7 @@ public class VehicleResource {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     @Path("field")
     public Response createField(@Valid final FieldRequest request) {
-        Field field = request.getBean();
+        final Field field = request.getBean();
         if(service.addField(field)) {
             supervisor.notifyNewField(field);
             return Response.status(Status.CREATED).build();

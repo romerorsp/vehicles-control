@@ -61,8 +61,8 @@ public class IntegrationFlowConfiguration {
     }
 
     @Bean("vehicleQXChangeBinding")
-    public Binding createBinding(@Autowired @Qualifier("vehicleQ") Queue queue,
-                                @Autowired @Qualifier("vehicleXChange") Exchange exchange) {
+    public Binding createBinding(@Autowired @Qualifier("vehicleQ") final Queue queue,
+                                @Autowired @Qualifier("vehicleXChange") final Exchange exchange) {
         return BindingBuilder.bind(queue)
                              .to(exchange)
                              .with("")
@@ -85,8 +85,8 @@ public class IntegrationFlowConfiguration {
     }
 
     @Bean("vehicleDLQXChangeBinding")
-    public Binding createDLQBinding(@Autowired @Qualifier("vehicleDLQ") Queue queue,
-                                @Autowired @Qualifier("vehicleDLQXChange") Exchange exchange) {
+    public Binding createDLQBinding(@Autowired @Qualifier("vehicleDLQ") final Queue queue,
+                                @Autowired @Qualifier("vehicleDLQXChange") final Exchange exchange) {
         return BindingBuilder.bind(queue)
                              .to(exchange)
                              .with("")
@@ -105,10 +105,9 @@ public class IntegrationFlowConfiguration {
                                         LOGGER.error("It wasn't possible to write the value [{}] as string", e);
                                         return null;
                                     }
-                               })
-                               .handle(Amqp.outboundAdapter(amqpTemplate)
-                                           .routingKey("")
-                                           .exchangeName(Constants.RABBIT_EXCHANGE_NAME))
+                               }).handle(Amqp.outboundAdapter(amqpTemplate)
+                                             .routingKey("")
+                                             .exchangeName(Constants.RABBIT_EXCHANGE_NAME))
                                .get();
     }
     

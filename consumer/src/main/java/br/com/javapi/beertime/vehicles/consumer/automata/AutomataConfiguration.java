@@ -22,7 +22,7 @@ class AutomataConfiguration {
     @Bean
     public Automata createParsing() {
         try {
-            Automata automata = Automata.parse(getScript());
+            final Automata automata = Automata.parse(getScript());
             LOGGER.info("PARSED AUTOMATA: [{}]", automata);
             return automata;
         } catch (MalFormedAutomataPatternException e) {
@@ -35,7 +35,7 @@ class AutomataConfiguration {
         return script;
     }
 
-    public void setScript(List<String> script) {
+    public void setScript(final List<String> script) {
         this.script = script;
     }
 }

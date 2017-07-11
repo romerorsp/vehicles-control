@@ -34,7 +34,7 @@ public final class Automata {
         this.initial = initial;
     }
     
-    public final static Automata parse(List<String> script) throws MalFormedAutomataPatternException {
+    public final static Automata parse(final List<String> script) throws MalFormedAutomataPatternException {
         try {
             Map<String, State> states = Optional.ofNullable(script)
                                                 .orElseGet(Collections::emptyList)
@@ -55,10 +55,10 @@ public final class Automata {
     }
     
     private static void link(State state, String keyValueString, Map<String, State> states) {
-        Map<Transition, State> keyValues = Arrays.stream(keyValueString.split("[\\,]"))
-                                                 .filter(StringUtils::hasLength)
-                                                 .collect(Collectors.toMap(value -> Transitions.valueOf(COLON_SPLITTER.apply(value)[0]),
-                                                                           value -> states.get(COLON_SPLITTER.apply(value)[1])));
+        final Map<Transition, State> keyValues = Arrays.stream(keyValueString.split("[\\,]"))
+                                                       .filter(StringUtils::hasLength)
+                                                       .collect(Collectors.toMap(value -> Transitions.valueOf(COLON_SPLITTER.apply(value)[0]),
+                                                                                 value -> states.get(COLON_SPLITTER.apply(value)[1])));
         state.setTransitions(keyValues);
     }
 

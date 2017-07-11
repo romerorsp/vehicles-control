@@ -19,7 +19,7 @@ public class VehicleStateTransformer implements GenericTransformer<String, Vehic
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleStateTransformer.class);
     
     @Override
-    public VehicleStateDTO transform(String jsonString) {
+    public VehicleStateDTO transform(final String jsonString) {
         try {
             return MAPPER.readValue(jsonString, VehicleStateDTO.class);
         } catch (IOException e) {

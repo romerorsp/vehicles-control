@@ -45,15 +45,8 @@ public class VehicleEndpoint implements VehiclesWebSocket {
                        @PathParam("posX")final int posX,
                        @PathParam("posY")final int posY,
                        final Session session) {
-        Optional<Field> field = service.getFieldList().stream().filter(fld -> fieldId.equalsIgnoreCase(fld.getId())).findAny();
-        boolean error = false;
-        if(field.isPresent()) {
-            if(field.get().getWidth() < posX || field.get().getHeight() < posY) {
-                error  = true;
-            }
-        } else {
-            error = true;
-        }
+        final Optional<Field> field = service.getFieldList().stream().filter(fld -> fieldId.equalsIgnoreCase(fld.getId())).findAny();
+        final boolean error = (!field.isPresent()) || (field.get().getWidth() < posX || field.get().getHeight() < posY);
         if(error) {
             try {
                 session.close();

@@ -29,7 +29,7 @@ public class AutomataService {
     private Automata automata;
 
     @ServiceActivator(inputChannel="vehiclesInputChannel")
-    public void consume(VehicleStateDTO state) {
+    public void consume(final VehicleStateDTO state) {
         if(state.getFieldId() == null || !fields.containsKey(state.getFieldId())) {
             throw new RuntimeException("There was an attempt to record vehicle for unexisting field");
         }

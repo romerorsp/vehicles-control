@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
               private dialog: MdDialog) {}
 
   ngOnInit(): void {
+    document.title = this.title;
     this.getFields();
   }
 

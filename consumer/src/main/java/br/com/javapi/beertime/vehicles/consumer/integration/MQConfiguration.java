@@ -57,8 +57,8 @@ public class MQConfiguration {
     }
 
     @Bean("vehicleQXChangeBinding")
-    public Binding createBinding(@Autowired @Qualifier("vehicleQ") Queue queue,
-                                @Autowired @Qualifier("vehicleXChange") Exchange exchange) {
+    public Binding createBinding(@Autowired @Qualifier("vehicleQ") final Queue queue,
+                                 @Autowired @Qualifier("vehicleXChange") final Exchange exchange) {
         return BindingBuilder.bind(queue)
                              .to(exchange)
                              .with("")
@@ -81,8 +81,8 @@ public class MQConfiguration {
     }
 
     @Bean("vehicleDLQXChangeBinding")
-    public Binding createDLQBinding(@Autowired @Qualifier("vehicleDLQ") Queue queue,
-                                @Autowired @Qualifier("vehicleDLQXChange") Exchange exchange) {
+    public Binding createDLQBinding(@Autowired @Qualifier("vehicleDLQ") final Queue queue,
+                                    @Autowired @Qualifier("vehicleDLQXChange") final Exchange exchange) {
         return BindingBuilder.bind(queue)
                              .to(exchange)
                              .with("")
@@ -92,7 +92,7 @@ public class MQConfiguration {
     @Bean("amqpConsumerFlow")
     public IntegrationFlow amqpFlow(@Autowired final ConnectionFactory connectionFactory,
                                     @Autowired @Qualifier("vehiclesInputChannel") final MessageChannel channel,
-                                    @Autowired @Qualifier("vehicleQ") Queue queue) {
+                                    @Autowired @Qualifier("vehicleQ") final Queue queue) {
         return IntegrationFlows.from(Amqp.inboundAdapter(connectionFactory, queue))
                                .transform(vehicleStateTransformer)
                                .channel(channel)
