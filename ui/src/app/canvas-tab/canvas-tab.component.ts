@@ -55,7 +55,7 @@ export class CanvasTabComponent implements OnInit, AfterViewInit, VehicleDrawer 
     const uuid = UUID.UUID();
     this.vehiclesService.addVehicle(new Vehicle(event.layerX,
       event.layerY,
-      this.field.id,
+      this.field,
       uuid,
       (coordinate) => this.tbDraw.push(coordinate),
       this.socket.createVehicleSocket(this.field, event.layerX, event.layerY, uuid),
@@ -63,7 +63,11 @@ export class CanvasTabComponent implements OnInit, AfterViewInit, VehicleDrawer 
   }
 
   drawVehicle(state: VehicleState): void {
-    this.tbDraw.push(Vehicle.toCoordinates(state, this.vehiclesService.isSelected(state.vehicleId)? "selected": "unselected"));
+    if(state.transition != "FINISH" && state.transition != "END") {
+      this.tbDraw.push(Vehicle.toCoordinates(state, this.vehiclesService.isSelected(state.vehicleId)? "selected": "unselected"));
+    } else {
+      this.canvas.fillRect(0, 0, this.field.width, this.field.height);
+    }
   }
 
   drawRemoveVehicle(state: VehicleState): void {
@@ -78,13 +82,10 @@ export class CanvasTabComponent implements OnInit, AfterViewInit, VehicleDrawer 
     requestAnimationFrame(() => {
       this.tick();
     });
-    if (this.clear) {
-      this.canvas.fillRect(0, 0, this.field.width, this.field.height);
-      this.clear = false;
-    }
 
     let item;
     while ((item = this.tbDraw.pop()) != null) {
+      this.canvas.fillRect(item.posX - 1, item.posY - 1, globalVehiclesSettings.vehiclesDefaultWidth + 2, globalVehiclesSettings.vehiclesDefaultHeight + 2);
       this.canvas.drawImage(this.spriteSheet,
         item.left,
         item.top,
@@ -94,6 +95,11 @@ export class CanvasTabComponent implements OnInit, AfterViewInit, VehicleDrawer 
         item.posY,
         globalVehiclesSettings.vehiclesDefaultWidth,
         globalVehiclesSettings.vehiclesDefaultHeight);
+    }
+
+    if (this.clear) {
+      this.canvas.fillRect(0, 0, this.field.width, this.field.height);
+      this.clear = false;
     }
   }
 

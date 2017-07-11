@@ -10,7 +10,7 @@ export class ChangeVehicleStateCommand implements Command<VehicleState> {
   constructor (private name: string, private vehicles: Array<Vehicle>) {}
  
   execute(state: VehicleState) {
-    const vehicle = this.vehicles.find(vehicle => vehicle.fieldId === state.fieldId && vehicle.uuid === state.vehicleId);
+    const vehicle = this.vehicles.find(vehicle => vehicle.field.id === state.fieldId && vehicle.uuid === state.vehicleId);
     if(vehicle) vehicle.state = state.transition;
   }
 

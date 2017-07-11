@@ -46,9 +46,18 @@ export class VehiclesService implements VehicleRemover {
   }
 
   removeVehicle(vehicle: Vehicle): void {
-    const index = this.vehicles.indexOf(vehicle);
-    this.vehicles = this.vehicles.splice(index, 1);
-    this.drawVehicleCommandService.clearField(vehicle.fieldId);
+    const array = new Array<Vehicle>();
+    let item = this.vehicles.pop();
+    while (item != null) {
+      if(item === vehicle) {
+        item = this.vehicles.pop();
+        continue;
+      }
+      array.push(item);
+      item = this.vehicles.pop();
+    }
+    array.forEach(vehicl => this.vehicles.push(vehicl));
+    this.drawVehicleCommandService.clearField(vehicle.field.id);
   }
 
   handle(event: KeyboardEvent): void {

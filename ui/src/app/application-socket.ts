@@ -24,7 +24,7 @@ export class ApplicationSocket {
 
   changeState(vehicle: Vehicle, transition: string) {
     if(vehicle != null && vehicle.state != transition) {
-      this.socket.send(JSON.stringify(new VehicleState(vehicle.x, vehicle.y, transition, vehicle.fieldId, vehicle.uuid as string)));
+      this.socket.send(JSON.stringify(new VehicleState(vehicle.x, vehicle.y, transition, vehicle.field.id, vehicle.uuid as string)));
     }
   }
 

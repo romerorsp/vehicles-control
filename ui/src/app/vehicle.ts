@@ -3,6 +3,7 @@ import { globalVehiclesSettings } from "app/global-vehicles-setting";
 import { UUID } from "angular2-uuid";
 import { VehicleState } from "app/vehicle-state";
 import { VehicleRemover } from "app/vehicle-remover";
+import { Field } from "app/field";
 
 export class Vehicle {
 
@@ -10,7 +11,7 @@ export class Vehicle {
     public uuid: UUID;
     public y: number;
     public x: number;
-    public fieldId: string;
+    public field: Field;
     private timerToken: any;
     public state: string = "CREATE";
 
@@ -46,31 +47,38 @@ export class Vehicle {
 
     constructor(x: number,
         y: number,
-        fieldId: string,
+        field: Field,
         uuid: UUID,
         private addCoordinates: Function,
         private socket: VehicleSocket,
         private remover: VehicleRemover) {
         this.x = x;
         this.y = y;
-        this.fieldId = fieldId;
+        this.field = field;
         this.uuid = uuid;
         const activity = () => {
-            
             if (this.state == null) {
-                socket.send(new VehicleState(this.x, this.y, "CREATE", this.fieldId, this.uuid as string));
+                socket.send(new VehicleState(this.x, this.y, "CREATE", this.field.id, this.uuid as string));
             } else if (this.state === "END" || this.state === "FINISH") {
                 this.socket.close();
                 this.remover.removeVehicle(this);
                 clearInterval(this.timerToken);
             } else if (this.state === "MOVE_UP") {
-                socket.send(new VehicleState(this.x, --this.y, "MOVE_UP", this.fieldId, this.uuid as string));
+                if(this.y - 1 >= 0) {
+                    socket.send(new VehicleState(this.x, --this.y, "MOVE_UP", this.field.id, this.uuid as string));
+                }
             } else if (this.state === "MOVE_DOWN") {
-                socket.send(new VehicleState(this.x, ++this.y, "MOVE_DOWN", this.fieldId, this.uuid as string));
+                if(this.y + 1 <= this.field.height) {
+                    socket.send(new VehicleState(this.x, ++this.y, "MOVE_DOWN", this.field.id, this.uuid as string));
+                }
             } else if (this.state === "MOVE_LEFT") {
-                socket.send(new VehicleState(--this.x, this.y, "MOVE_LEFT", this.fieldId, this.uuid as string));
+                if(this.x - 1 >= 0) {
+                    socket.send(new VehicleState(--this.x, this.y, "MOVE_LEFT", this.field.id, this.uuid as string));
+                }
             } else if (this.state === "MOVE_RIGHT") {
-                socket.send(new VehicleState(++this.x, this.y, "MOVE_RIGHT", this.fieldId, this.uuid as string));
+                if(this.x + 1 <= this.field.width) {
+                    socket.send(new VehicleState(++this.x, this.y, "MOVE_RIGHT", this.field.id, this.uuid as string));
+                }
             }
         };
         this.timerToken = setInterval(activity, globalVehiclesSettings.defaultVelocity);
