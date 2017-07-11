@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 import javax.annotation.Resource;
-import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
@@ -23,9 +22,6 @@ import br.com.javapi.beertime.vehicles.common.Constants;
 import br.com.javapi.beertime.vehicles.common.bean.Field;
 import br.com.javapi.beertime.vehicles.common.bean.Transitions;
 import br.com.javapi.beertime.vehicles.common.dto.VehicleStateDTO;
-import br.com.javapi.beertime.vehicles.websocket.command.Command;
-import br.com.javapi.beertime.vehicles.websocket.command.CommandTypes;
-import br.com.javapi.beertime.vehicles.websocket.command.Commands;
 import br.com.javapi.beertime.vehicles.websocket.encoder.VehicleStateEncoderDecoder;
 import br.com.javapi.beertime.vehicles.websocket.service.FieldService;
 
@@ -36,9 +32,6 @@ public class VehicleEndpoint implements VehiclesWebSocket {
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleSupervisorEndpoint.class); 
     
     public Optional<Session> lastSession = Optional.empty();
-
-    @Autowired
-    private Commands commands;
 
     @Autowired
     private FieldService service;
@@ -91,33 +84,5 @@ public class VehicleEndpoint implements VehiclesWebSocket {
         channel.send(MessageBuilder.withPayload(new VehicleStateDTO(fieldId, vehicleId, posX, posY, Transitions.FINISH))
                                    .setHeader(Constants.MESSAGE_TYPE_HEADER_NAME, Constants.VEHICLE_MESSAGE_TYPE_VALUE)
                                    .build());
-    }
-
-    @Override
-    public void notifyVehicleState(VehicleStateDTO state) {
-        Command<VehicleStateDTO> command = commands.getCommand(CommandTypes.DRAW_VEHICLE, state);
-        this.lastSession.ifPresent(session -> session.getOpenSessions()
-                                                     .stream()
-                                                     .forEach(open -> {
-            try {
-                open.getBasicRemote().sendObject(command);
-            } catch (IOException | EncodeException e) {
-                LOGGER.error("Severe Error while sending vehicle state [{}] to the session [{}]", state, open.getId(), e);
-            }
-        }));
-    }
-
-    @Override
-    public void notifyVehicleRemoved(VehicleStateDTO state) {
-        Command<VehicleStateDTO> command = commands.getCommand(CommandTypes.REMOVE_VEHICLE, state);
-        this.lastSession.ifPresent(session -> session.getOpenSessions()
-                                                     .stream()
-                                                     .forEach(open -> {
-            try {
-                open.getBasicRemote().sendObject(command);
-            } catch (IOException | EncodeException e) {
-                LOGGER.error("Severe Error while sending vehicle state [{}] to the session [{}]", state, open.getId(), e);
-            }
-        }));
     }
 }

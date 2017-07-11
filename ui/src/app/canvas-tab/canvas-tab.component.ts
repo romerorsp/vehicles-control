@@ -31,7 +31,9 @@ export class CanvasTabComponent implements OnInit, AfterViewInit, VehicleDrawer 
     private socket: SocketService,
     private drawVehicleCommandService: DrawVehicleCommandService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log("Creating new canvas");
+  }
 
   ngAfterViewInit(): void {
     this.canvas = this.vehicleCanvas.nativeElement.getContext('2d');

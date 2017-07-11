@@ -60,9 +60,10 @@ public class VehicleSupervisorEndpoint implements SupervisorWebSocket {
             }
         }));
     }
-    
-    public void notifyChangeState(VehicleStateDTO state) {
-        Command<VehicleStateDTO> command = commands.getCommand(CommandTypes.CHANGE_VEHICLE_STATE, state);
+
+    @Override
+    public void notifyVehicleState(VehicleStateDTO state) {
+        Command<VehicleStateDTO> command = commands.getCommand(CommandTypes.DRAW_VEHICLE, state);
         this.lastSession.ifPresent(session -> session.getOpenSessions()
                                                      .stream()
                                                      .forEach(open -> {
@@ -71,6 +72,37 @@ public class VehicleSupervisorEndpoint implements SupervisorWebSocket {
             } catch (IOException | EncodeException e) {
                 LOGGER.error("Severe Error while sending vehicle state [{}] to the session [{}]", state, open.getId(), e);
             }
+        }));
+    }
+    
+    public void notifyChangeState(VehicleStateDTO state) {
+        Command<VehicleStateDTO> command = commands.getCommand(CommandTypes.CHANGE_VEHICLE_STATE, state);
+        this.lastSession.ifPresent(session -> session.getOpenSessions()
+                                                     .stream()
+                                                     .forEach(open -> {
+            open.getOpenSessions()
+                .stream()
+                .map(Session::getBasicRemote).forEach(remote -> {
+                    try {
+                        remote.sendObject(command);
+                    } catch (IOException | EncodeException e) {
+                        LOGGER.error("Severe Error while sending vehicle state [{}] to the session [{}]", state, open.getId(), e);
+                    }
+                });
         }));        
+    }
+    
+    @Override
+    public void notifyVehicleRemoved(VehicleStateDTO state) {
+        Command<VehicleStateDTO> command = commands.getCommand(CommandTypes.REMOVE_VEHICLE, state);
+        this.lastSession.ifPresent(session -> session.getOpenSessions()
+                                                     .stream()
+                                                     .forEach(open -> {
+            try {
+                open.getBasicRemote().sendObject(command);
+            } catch (IOException | EncodeException e) {
+                LOGGER.error("Severe Error while sending vehicle state [{}] to the session [{}]", state, open.getId(), e);
+            }
+        }));
     }
 }

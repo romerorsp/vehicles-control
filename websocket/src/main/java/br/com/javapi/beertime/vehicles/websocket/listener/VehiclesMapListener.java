@@ -14,7 +14,7 @@ import com.hazelcast.map.listener.EntryRemovedListener;
 import com.hazelcast.map.listener.EntryUpdatedListener;
 
 import br.com.javapi.beertime.vehicles.common.bean.Vehicle;
-import br.com.javapi.beertime.vehicles.websocket.endpoint.VehiclesWebSocket;
+import br.com.javapi.beertime.vehicles.websocket.endpoint.SupervisorWebSocket;
 
 @Component
 public class VehiclesMapListener implements EntryAddedListener<String, Vehicle>,
@@ -26,7 +26,7 @@ public class VehiclesMapListener implements EntryAddedListener<String, Vehicle>,
     private IMap<String, Vehicle> vehicles;
     
     @Autowired
-    private VehiclesWebSocket socket;
+    private SupervisorWebSocket supervisor;
     
     @PostConstruct
     public void setup() {
@@ -35,21 +35,21 @@ public class VehiclesMapListener implements EntryAddedListener<String, Vehicle>,
 
     @Override
     public void entryUpdated(EntryEvent<String, Vehicle> entry) {
-        socket.notifyVehicleState(entry.getValue().toDTO());
+        supervisor.notifyVehicleState(entry.getValue().toDTO());
     }
 
     @Override
     public void entryMerged(EntryEvent<String, Vehicle> entry) {
-        socket.notifyVehicleState(entry.getValue().toDTO());
+        supervisor.notifyVehicleState(entry.getValue().toDTO());
     }
 
     @Override
     public void entryAdded(EntryEvent<String, Vehicle> entry) {
-        socket.notifyVehicleState(entry.getValue().toDTO());
+        supervisor.notifyVehicleState(entry.getValue().toDTO());
     }
 
     @Override
     public void entryRemoved(EntryEvent<String, Vehicle> entry) {
-        socket.notifyVehicleRemoved(entry.getValue().toDTO());
+        supervisor.notifyVehicleRemoved(entry.getValue().toDTO());
     }
 }

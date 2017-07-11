@@ -15,22 +15,22 @@ export class VehiclesService implements VehicleRemover {
   private current: Vehicle;
 
   constructor(private drawVehicleCommandService: DrawVehicleCommandService,
-              private socketService: SocketService,
-              private commandsMappingService: CommandsMappingService) {
+    private socketService: SocketService,
+    private commandsMappingService: CommandsMappingService) {
     this.commandsMappingService.addCommand(new ChangeVehicleStateCommand('CHANGE_VEHICLE_STATE', this.vehicles));
   }
 
   isSelected(id: string): boolean {
-    return (!this.current == null) && this.current.uuid === id;
+    return (!(this.current == null)) && this.current.uuid === id && this.current.colorType === globalVehiclesSettings.selectedColorType;
   }
 
   selectVehicle(x: number, y: number): boolean {
     const vehicle = this.vehicles.find(v => {
       v.colorType = globalVehiclesSettings.unselectedColorType;
-      return (x >= (v.x-globalVehiclesSettings.vehiclesDefaultWidth) && x <= (v.x+globalVehiclesSettings.vehiclesDefaultWidth)) ||
-             (y >= (v.y-globalVehiclesSettings.vehiclesDefaultHeight) && y <= (v.y+globalVehiclesSettings.vehiclesDefaultHeight))
+      return (x >= (v.x - globalVehiclesSettings.vehiclesDefaultWidth) && x <= (v.x + globalVehiclesSettings.vehiclesDefaultWidth)) &&
+        (y >= (v.y - globalVehiclesSettings.vehiclesDefaultHeight) && y <= (v.y + globalVehiclesSettings.vehiclesDefaultHeight))
     });
-    if(vehicle != null) {
+    if (vehicle != null) {
       this.current = vehicle;
       vehicle.colorType = globalVehiclesSettings.selectedColorType;
       return true;
@@ -54,7 +54,7 @@ export class VehiclesService implements VehicleRemover {
   handle(event: KeyboardEvent): void {
     const key = event.code;
     const appSocket = this.socketService.getApplicationSocket();
-    switch(key) {
+    switch (key) {
       case "ArrowUp": {
         appSocket.changeState(this.current, "MOVE_UP");
         break;

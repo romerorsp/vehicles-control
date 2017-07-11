@@ -1,5 +1,5 @@
 export const globalVehiclesSettings = {
-    defaultVelocity: 200,
+    defaultVelocity: 100,
     vehiclesDefaultWidth: 50,
     vehiclesDefaultHeight: 50,
     spriteImageSource: 'assets/img/vehicles-sprite.png',
@@ -8,54 +8,54 @@ export const globalVehiclesSettings = {
     unselectedColorType: "unselected",
     selected: {
         downCarCoordinates: {
-            left: 138,
-            top: 8,
-            width: 50,
-            height: 50
+            left: 150,
+            top: 10,
+            width: 37,
+            height: 38
         },
         leftCarCoordinates: {
-            left: 138,
-            top: 56,
-            width: 50,
-            height: 50
+            left: 150,
+            top: 61,
+            width: 37,
+            height: 35
         },
         rightCarCoordinates: {
-            left: 138,
-            top: 103,
-            width: 50,
-            height: 50
+            left: 149,
+            top: 109,
+            width: 37,
+            height: 35
         },
         upCarCoordinates: {
-            left: 138,
-            top: 151,
-            width: 50,
-            height: 50
+            left: 150,
+            top: 157,
+            width: 37,
+            height: 35
         }
     },
     unselected: {
         downCarCoordinates: {
-            left: 0,
-            top: 0,
-            width: 45,
-            height: 45
+            left: 6,
+            top: 10,
+            width: 37,
+            height: 38
         },
         leftCarCoordinates: {
-            left: 0,
-            top: 50,
-            width: 45,
-            height: 45
+            left: 6,
+            top: 61,
+            width: 37,
+            height: 35
         },
         rightCarCoordinates: {
-            left: 0,
-            top: 98,
-            width: 45,
-            height: 45
+            left: 5,
+            top: 109,
+            width: 37,
+            height: 35
         },
         upCarCoordinates: {
-            left: 0,
-            top: 144,
-            width: 45,
-            height: 45
+            left: 6,
+            top: 157,
+            width: 37,
+            height: 35
         }
     }
 }

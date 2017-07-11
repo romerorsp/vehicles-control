@@ -58,19 +58,19 @@ export class Vehicle {
         const activity = () => {
             
             if (this.state == null) {
-                socket.send(new VehicleState(x, y, "CREATE", this.fieldId, this.uuid as string));
+                socket.send(new VehicleState(this.x, this.y, "CREATE", this.fieldId, this.uuid as string));
             } else if (this.state === "END" || this.state === "FINISH") {
                 this.socket.close();
                 this.remover.removeVehicle(this);
                 clearInterval(this.timerToken);
             } else if (this.state === "MOVE_UP") {
-                socket.send(new VehicleState(x, --y, "MOVE_UP", this.fieldId, this.uuid as string));
+                socket.send(new VehicleState(this.x, --this.y, "MOVE_UP", this.fieldId, this.uuid as string));
             } else if (this.state === "MOVE_DOWN") {
-                socket.send(new VehicleState(x, ++y, "MOVE_DOWN", this.fieldId, this.uuid as string));
+                socket.send(new VehicleState(this.x, ++this.y, "MOVE_DOWN", this.fieldId, this.uuid as string));
             } else if (this.state === "MOVE_LEFT") {
-                socket.send(new VehicleState(--x, y, "MOVE_LEFT", this.fieldId, this.uuid as string));
+                socket.send(new VehicleState(--this.x, this.y, "MOVE_LEFT", this.fieldId, this.uuid as string));
             } else if (this.state === "MOVE_RIGHT") {
-                socket.send(new VehicleState(++x, y, "MOVE_RIGHT", this.fieldId, this.uuid as string));
+                socket.send(new VehicleState(++this.x, this.y, "MOVE_RIGHT", this.fieldId, this.uuid as string));
             }
         };
         this.timerToken = setInterval(activity, globalVehiclesSettings.defaultVelocity);
