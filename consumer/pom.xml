@@ -13,7 +13,7 @@
 		<artifactId>vehicles-control</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<properties>
 		<finalName>${project.artifactId}-${project.version}-${maven.build.timestamp}</finalName>
 		<start-class>br.com.javapi.beertime.vehicles.consumer.VehiclesMQApplication</start-class>
@@ -74,6 +74,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -85,7 +92,7 @@
 						<groupId>com.spotify</groupId>
 						<artifactId>docker-maven-plugin</artifactId>
 						<version>1.0.0</version>
-						
+
 						<executions>
 							<execution>
 								<id>build-docker-image</id>
@@ -96,7 +103,8 @@
 								<configuration>
 									<imageName>tbaconsumer</imageName>
 									<baseImage>java</baseImage>
-									<entryPoint>["java", "-Dspring.profiles.active=docker", "-jar", "${finalName}.jar"]</entryPoint>
+									<entryPoint>["java", "-Dspring.profiles.active=docker", "-jar",
+										"${finalName}.jar"]</entryPoint>
 									<resources>
 										<resource>
 											<targetPath>/</targetPath>

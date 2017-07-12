@@ -18,7 +18,6 @@ import br.com.javapi.beertime.vehicles.consumer.automata.Automata;
 @Component
 public class AutomataService {
     
-
     @Resource(name="fieldsMap")
     private IMap<String, Field> fields;
 
@@ -57,5 +56,17 @@ public class AutomataService {
                 vehicles.put(vehicle.getId(), vehicle);
             }
         }
+    }
+
+    public void setFields(IMap<String, Field> fields) {
+        this.fields = fields;
+    }
+
+    public void setVehicles(IMap<String, Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
+    public void setAutomata(Automata automata) {
+        this.automata = automata;
     }
 }
