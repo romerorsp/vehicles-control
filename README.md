@@ -2,7 +2,7 @@
 
 This project aims to provide a referente about how me (Romero) as an architect would solve the architecture of controlling and viewing vehicles' acivity. 
 
-## Based sprint-boot 1.5.x - Vehicles Control:
+## Based spring-boot 1.5.x - Vehicles Control:
  
 #### The application shows:
 * The use of spring-boot;
